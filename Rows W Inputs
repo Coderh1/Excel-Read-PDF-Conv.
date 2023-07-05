@@ -28,13 +28,22 @@ pdf.set_font("Arial", size=12)
 
 # Read the data from the Excel file and add it to the PDF
 data = pd.read_excel(output_excel_name)
+
+# Calculate the cell width dynamically based on the content length
+cell_width = 40
+
 for row in data.values:
     for col in row:
-        pdf.cell(40, 10, str(col), border=1)
+        # Adjust the cell width if necessary based on the content length
+        if pdf.get_string_width(str(col)) > cell_width:
+            cell_width = pdf.get_string_width(str(col))
+
+# Iterate over the data and add it to the PDF with adjusted cell width
+for row in data.values:
+    for col in row:
+        pdf.cell(cell_width, 10, str(col), border=1)
     pdf.ln()
 
 # Prompt the user to enter the output PDF file name
-output_pdf_name = input("Enter the output PDF file name: ")
+output_pdf
 
-# Save the PDF file
-pdf.output(output_pdf_name)

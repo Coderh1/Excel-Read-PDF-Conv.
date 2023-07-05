@@ -26,22 +26,25 @@ pdf.add_page()
 # Set the font and font size
 pdf.set_font("Arial", size=12)
 
-# Read the data from the Excel file and add it to the PDF
+# Read the data from the Excel file
 data = pd.read_excel(output_excel_name)
 
-# Calculate the cell width dynamically based on the content length
-cell_width = 40
+# Calculate the maximum cell width for each column
+cell_widths = [pdf.get_string_width(str(header)) for header in data.columns]
+for row in data.values:
+    for i, col in enumerate(row):
+        cell_width = pdf.get_string_width(str(col))
+        if cell_width > cell_widths[i]:
+            cell_widths[i] = cell_width
+
+# Add the data to the PDF with adjusted cell widths
+for header in data.columns:
+    pdf.cell(cell_widths[data.columns.get_loc(header)], 10, str(header), border=1)
+pdf.ln()
 
 for row in data.values:
-    for col in row:
-        # Adjust the cell width if necessary based on the content length
-        if pdf.get_string_width(str(col)) > cell_width:
-            cell_width = pdf.get_string_width(str(col))
-
-# Iterate over the data and add it to the PDF with adjusted cell width
-for row in data.values:
-    for col in row:
-        pdf.cell(cell_width, 10, str(col), border=1)
+    for i, col in enumerate(row):
+        pdf.cell(cell_widths[i], 10, str(col), border=1)
     pdf.ln()
 
 # Prompt the user to enter the output PDF file name

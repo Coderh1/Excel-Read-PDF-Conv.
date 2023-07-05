@@ -26,4 +26,15 @@ pdf.add_page()
 # Set the font and font size
 pdf.set_font("Arial", size=12)
 
-# Read the data from the Excel file and add it to the
+# Read the data from the Excel file and add it to the PDF
+data = pd.read_excel(output_excel_name)
+for row in data.values:
+    for col in row:
+        pdf.cell(40, 10, str(col), border=1)
+    pdf.ln()
+
+# Prompt the user to enter the output PDF file name
+output_pdf_name = input("Enter the output PDF file name: ")
+
+# Save the PDF file
+pdf.output(output_pdf_name)

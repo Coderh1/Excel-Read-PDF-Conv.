@@ -31,6 +31,8 @@ data = pd.read_excel(output_excel_name)
 
 # Calculate the maximum cell width for each column
 cell_widths = [pdf.get_string_width(str(header)) for header in data.columns]
+
+# Iterate over the data and update the maximum cell width for each column
 for row in data.values:
     for i, col in enumerate(row):
         cell_width = pdf.get_string_width(str(col))

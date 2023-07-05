@@ -45,5 +45,7 @@ for row in data.values:
     pdf.ln()
 
 # Prompt the user to enter the output PDF file name
-output_pdf
+output_pdf_name = input("Enter the output PDF file name: ")
 
+# Save the PDF file
+pdf.output(output_pdf_name)

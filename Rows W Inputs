@@ -1,0 +1,40 @@
+import pandas as pd
+from fpdf import FPDF
+
+# Prompt the user to enter the input Excel file name
+input_file_name = input("Enter the input Excel file name: ")
+
+# Load the Excel file into a pandas dataframe
+df = pd.read_excel(input_file_name)
+
+# Prompt the user to enter the number of rows to read
+num_rows = int(input("Enter the number of rows to read: "))
+
+# Extract the specified number of rows
+extracted_df = df.head(num_rows)
+
+# Prompt the user to enter the output Excel file name
+output_excel_name = input("Enter the output Excel file name: ")
+
+# Save the extracted dataframe to a new Excel file
+extracted_df.to_excel(output_excel_name, index=False)
+
+# Convert the Excel file to PDF
+pdf = FPDF()
+pdf.add_page()
+
+# Set the font and font size
+pdf.set_font("Arial", size=12)
+
+# Read the data from the Excel file and add it to the PDF
+data = pd.read_excel(output_excel_name)
+for row in range(len(data)):
+    for col in range(len(data.columns)):
+        pdf.cell(40, 10, str(data.iloc[row, col]), border=1)
+    pdf.ln()
+
+# Prompt the user to enter the output PDF file name
+output_pdf_name = input("Enter the output PDF file name: ")
+
+# Save the PDF file
+pdf.output(output_pdf_name)
